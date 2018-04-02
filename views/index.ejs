@@ -1,0 +1,47 @@
+<% include common/header.ejs %>
+<link rel="stylesheet" href="/static/css/index.css">
+<div class="panel panel-default" style="margin-top:80px;">
+  	<div class="panel-heading" style="overflow:hidden;line-height: 33px;">分享列表<a href="/add" style="float:right;" class="btn btn-info">添加</a></div>
+  	<ul id="list">
+  		<li class="title" style="line-height: 20px;">
+        <div>文章/栏目/频道ID</div>
+        <div>分享类型</div>
+        <div style="flex:2;">分享设备</div>
+        <div>分享平台</div>
+  			<div>是否红包分享</div>
+  			<div>渠道</div>
+  			<div>媒体来源</div>
+  			<div style="flex:3;">分享标题</div>
+        <div style="flex:3;">分享描述</div>
+        <div style="flex:3;">分享地址</div>
+        <div style="flex:3;">分享logo</div>
+  			<div style="flex:2;">操作</div>
+  		</li>
+  		<%for(var i=0;i<result.length;i++) {%>
+    			<li>
+          <% if(result[i].srcinfoid){ %>
+            <div>文章：<%= result[i].srcinfoid %></div>
+          <%}else if(result[i].topic){%>
+           <div>栏目：<%= result[i].topic %></div>
+          <%}else{%>
+           <div>频道：<%= result[i].ditch %></div>
+          <%}%>
+	  			<div class="mediahide" class="type"><%=result[i].type%></div>
+          <div style="flex:2;" class="mediahide"><%=result[i].device%></div>
+          <div class="mediahide"><%=result[i].planform%></div>
+          <div class="mediahide"><%=result[i].red%></div>
+          <div class="mediahide"><%=result[i].channel%></div>
+          <div class="mediahide"><%=result[i].media%></div>
+          <div style="flex:3;overflow:auto;"><%=result[i].title%></div>
+          <div style="flex:3;overflow:auto;"><%=result[i].des%></div>
+          <div style="flex:3;overflow:auto;"><%=result[i].url%></div>
+	  			<div style="flex:3;overflow:auto;"><%=result[i].imgurl%></div>
+	  			<div style="flex:2;"><a href="/edit/<%=result[i].id%>" class="btn btn-info">编辑</a>&nbsp;&nbsp;<a href="/del/<%=result[i].id%>" class="btn btn-danger">删除</a></div>
+	  		</li>
+  		<% } %>
+  	</ul>
+</div>
+
+<% include common/footer.ejs %>
+
+

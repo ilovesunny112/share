@@ -1,0 +1,119 @@
+<% include ../common/header.ejs %>
+<script src="/static/js/jquery-1.7.2.min.js"></script>
+<link rel="stylesheet" href="/static/css/codemirror.min.css">
+<link rel="stylesheet" href="/static/css/sweet-alert.css">
+<link rel="stylesheet" href="/static/css/colorforth.css">
+<script src="/static/js/codemirror.min.js"></script>
+<script src="/static/js/velocity.min.js"></script>
+<script src="/static/js/htmlmixed.min.js"></script>
+<script src="/static/js/sweet-alert.js"></script>
+<style>
+	body{
+		width:90%;
+		margin:0 auto;
+	}
+	.ruletitle {
+		margin-top: 80px;
+	}
+	.CodeMirror{
+		border: 1px solid #ccc;
+		height: 428px;
+	}
+	.butlist{
+		text-align: center;
+		margin-top:20px;
+	}
+	.butlist .btn-info{
+		margin-left:20px;
+	}
+</style>
+<h2 class="ruletitle">生成js规则模板</h2>
+<textarea id="code_edit"></textarea>
+<div class="butlist">
+	<a id="save" class="btn btn-info">提交</a>
+	<a id="build" class="btn btn-info">生成</a>
+	<button id="release" class="btn btn-info">推送上线</button>
+</div>
+<script>
+    var editor = CodeMirror.fromTextArea(document.getElementById('code_edit'), {
+		lineNumbers: true,
+        lineWrapping:"wrap"
+	});
+	
+    editor.setOption("theme", "colorforth");
+
+    $.ajax({
+    	url: '/test/index.txt',
+    	success: function(data){
+    		editor.setValue(data);
+    	}
+    })
+    $('#save').click(function() {
+    	$.ajax({
+	    	url: '/rules/save',
+	    	type: 'post',
+	    	data: {text: editor.getValue()},
+	    	success: function(data){
+	    		if(data.code == 0) {
+	    			swal({
+					  title: "保存成功",
+					  text: "轻轻松松来搞定",
+					  imageUrl: "/static/img/thumbs-up.jpg"
+					});
+	    		}else {
+	    			swal('保存失败');
+	    		}
+	    	},
+	    	error: function(err) {
+	    		swal('保存失败');
+	    	}
+	    })	
+    })
+    $('#build').click(function() {
+    	$.ajax({
+	    	url: '/rules/build',
+	    	type: 'get',
+	    	success: function(data){
+	    		if(data.code == 0) {
+	    			swal({
+					  title: "生成成功",
+					  text: "轻轻松松来搞定",
+					  imageUrl: "/static/img/thumbs-up.jpg"
+					});
+	    		}else {
+	    			swal('生成失败');
+	    		}
+	    	},
+	    	error: function(err) {
+	    		swal('生成失败');
+	    	}
+	    })	
+    })
+
+    $('#release').click(function(){
+    	$.ajax({
+	    	url: 'http://run.caixin.com/cdn/',
+	    	type: 'post',
+	    	data: {content: 'http://file.caixin.com/en/ulu.html'},
+	    	dataType: 'text',
+	    	success: function(data){
+	    		if(data.indexOf('success append purge') != -1) {
+	    			swal({
+					  title: "推送成功",
+					  text: "轻轻松松来搞定",
+					  imageUrl: "/static/img/thumbs-up.jpg"
+					});
+	    		}else {
+	    			swal("推送失败");
+	    		}
+	    	},
+	    	error: function(err) {
+	    		swal('推送失败');
+	    	}
+	    })
+    })
+</script>
+<% include ../common/footer.ejs %>
+
+
+

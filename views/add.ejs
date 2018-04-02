@@ -1,0 +1,190 @@
+<% include common/header.ejs %>
+<link rel="stylesheet" href="/static/css/sweet-alert.css">
+<script src="/static/js/sweet-alert.js"></script>
+<style>
+  .input-group{margin:10px auto; width: 80%; line-height: 30px; font-size: 16px;position: relative;}
+  .filetheme{display:none;}
+  .input-group lable,.input-group .lable{width: 13%;padding-right:1%;display: inline-block; text-align: right;float: left;}
+  .input-group .lable{
+    border:1px solid #ccc;
+    height: 33px;
+    width: 7%;
+    margin-left: 7%;
+  }
+  .input-group .form-control{width: 86%; float: right;}
+  .input-group input[type='file']{width: 80%; height: 34px; cursor: pointer;}
+  .edit{margin-top: 20px;}
+  @media(max-width:990px) {
+    .input-group input[type='file']{opacity: 0;position: relative;z-index: 2;bottom: -10px;}
+      .filetheme{display:block;position: absolute;width: 100%;height: 34px;bottom: 0;left: 0;z-index: 0; text-align: center;line-height: 34px; cursor: pointer;}
+    .input-group{margin:10px auto; width: 80%; line-height: 30px; font-size: 16px;position: relative;}
+    .filetheme{position: absolute;width: 100%;height: 34px;bottom: -10px;left: 0;z-index: 0; text-align: center;line-height: 34px; cursor: pointer;}
+    .input-group lable,.input-group .lable{width: 80%;display: inline-block; text-align: left;float: left;}
+    .input-group .form-control{width: 100%;float: left;}
+    .edit{margin-top: 20px;}
+    .input-group .lable{
+        position: relative;
+        top: 1px;
+        margin-left: 0;
+        border-bottom: 1px solid #fff;
+        z-index: 11;
+        width: 100px;
+    }
+  }
+</style>
+<script src="/static/js/jquery-1.7.2.min.js" ></script>
+<script src="/config/index.js"></script>
+<script src="/static/js/utils/turnWord.js"></script>
+<div style="margin-top:80px;">
+  <%var data = result[0]%>
+   <%if(data.des.length < 1) {%>
+    <form id="sub" class="bs-example bs-example-form" action="/save" enctype="multipart/form-data" method="post">
+   <%}else{%>
+    <form class="bs-example bs-example-form" action="/profile" enctype="multipart/form-data" method="post">
+      <input type="hidden" name="id" value="<%=data.id%>">
+   <%}%>
+    <div class="input-group">
+        <!-- <select class="lable" id="idtype">
+          <option value="srcinfoid">文章id</option>
+          <option value="topic">栏目id</option>
+          <option value="ditch">频道id</option>
+        </select> -->
+        <% if(data.srcinfoid){ %>
+          <select class="lable" id="idtype">
+            <option value="srcinfoid" selected>文章id</option>
+            <option value="topic">栏目id</option>
+            <option value="ditch">频道id</option>
+          </select>
+          <input type="text" name="srcinfoid" class="form-control col-md-12 pagekey chooseid" placeholder="文章id" value="<%=data.srcinfoid%>">
+        <%}else if(data.topic){%>
+          <select class="lable" id="idtype">
+            <option value="srcinfoid">文章id</option>
+            <option value="topic" selected>栏目id</option>
+            <option value="ditch">频道id</option>
+          </select>
+          <input type="text" name="topic" class="form-control col-md-12 pagekey chooseid" placeholder="栏目id" value="<%=data.topic%>">
+        <%}else{%>
+          <select class="lable" id="idtype">
+            <option value="srcinfoid">文章id</option>
+            <option value="topic">栏目id</option>
+            <option value="ditch" selected>频道id</option>
+          </select>
+          <input type="text" name="ditch" class="form-control col-md-12 chooseid" placeholder="频道id" value="<%=data.ditch%>">
+        <%}%>
+        
+    </div>
+    <div class="input-group">
+          <lable>接入端:</lable> 
+          <select name="device" id="" class="form-control col-md-12">
+            <option value="0">财新网App(ISO/Android)</option>
+            <option value="1">财新网WAP</option>
+            <option value="2">财新周刊APP(IOS/Android)</option>
+          </select>
+    </div>
+    <div class="input-group">
+          <lable>分享类型:</lable> 
+          <select name="type" id="" class="form-control col-md-12">
+            <option value="0">请选择</option>
+            <option value="1">文章分享</option>
+            <option value="2">一线分享</option>
+            <option value="3">专题分享</option>
+          </select>
+    </div>
+    <div class="input-group">
+          <lable>分享平台:</lable> 
+          <select name="planform" id="" class="form-control col-md-12">
+            <option value="0">请选择</option>
+            <option value="1">微信朋友圈</option>
+            <option value="2">微信好友</option>
+            <option value="3">QQ</option>
+            <option value="4">微博</option>
+            <option value="5">邮件</option>
+            <option value="6">其他</option>
+          </select>
+    </div>
+    <div class="input-group">
+          <lable>红包分享:</lable> 
+          <select name="red" id="" class="form-control col-md-12">
+            <option value="0">否</option>
+            <option value="1">是</option>
+          </select>
+    </div>
+    <div class="input-group">
+          <lable>媒体来源:</lable> 
+          <select name="media" id="" class="form-control col-md-12">
+            <option value="0">请选择</option>
+            <option value="1">是</option>
+          </select>
+    </div>
+    <div class="input-group">
+          <lable>渠道来源:</lable> 
+          <select name="channel" id="" class="form-control col-md-12">
+            
+          </select>
+    </div>
+    <!-- <div class="input-group">
+        <lable>所属频道：</lable><input type="text" name="column" class="form-control col-md-12" value="<%=data.columnid%>">
+    </div> -->
+    <div class="input-group">
+          <lable>分享标题:</lable>
+          <textarea rows="2" name="title" class="form-control col-md-12" placeholder="填写分享标题" value=""><%=data.title%></textarea>
+    </div>
+    <div class="input-group">
+          <lable>分享描述:</lable><textarea rows="5" name="des" class="form-control col-md-12" placeholder="填写分享描述" value=""><%=data.des%></textarea>
+    </div>
+    <div class="input-group">
+          <lable>分享图片:</lable><input type="file" name="upload">
+          <div class="filetheme btn-info">本地上传分享图片</div>
+    </div>
+    <div class="input-group">
+          <lable>分享文章地址:</lable>
+          <textarea rows="2" name="url" class="form-control col-md-12" placeholder="填写分享地址" value=""><%=data.url%></textarea>
+    </div>
+    <div class="input-group" style="text-align: center;">
+      <%if(data.des.length < 1) {%>
+        <button href="javascript:;" class="btn btn-info edit">保存</button>
+      <%}else{%>
+    		<button href="javascript:;" class="btn btn-info edit">编辑</button>
+      <%}%>
+    </div>
+  </form>
+</div>
+<script>
+  $(function() {
+      function getOptions(element, chooseList) {
+        var str = "<option value='0'>请选择</option>";
+        for(var key in chooseList) {
+          str += '<option value="'+ key +'">'+ chooseList[key] +'</option>'
+        }
+        element.html(str);
+      }
+
+      getOptions($('select[name=planform]'), window.sharePlatform);
+      getOptions($('select[name=media]'), window.shareMedia);
+      getOptions($('select[name=channel]'), window.shareChannle);
+      getOptions($('select[name=type]'), window.shareType);
+      getOptions($('select[name=device]'), window.device);
+
+      <% if(result.length){ %>
+        $('[name=device]').val(<%=data.device%>);
+        $('[name=type]').val(<%=data.type%>);
+        $('[name=planform]').val(<%=data.planform%>);
+        $('[name=red]').val(<%=data.red%>);
+        $('[name=media]').val(<%=data.media%>);
+        $('[name=channel]').val(<%=data.channel%>);
+      <%}%>
+      $('#idtype').change(function() {
+        $('.chooseid').attr('name', $(this).val()).attr('placeholder', $(this).val());
+      })
+
+      $('#sub').submit(function() {
+        if($('.pagekey').val() <= 20) {
+          swal('ID必须是1到10位数字');
+          return false;
+        }
+      })
+  })
+</script>
+<% include common/footer.ejs %>
+
+
